@@ -1,2 +1,2 @@
-# ansible_tutorials
-A repository which I can use to test ansible + git workflow.
+# Ansible Tutorials
+A simple repository, used for testing ansible + git workflow!
