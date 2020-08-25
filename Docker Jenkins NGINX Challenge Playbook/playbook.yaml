@@ -1,0 +1,34 @@
+---
+- hosts: docker_nginx
+  become: yes
+  roles:
+    - common
+    - install_nginx
+    - docker
+  vars_files:
+    - common_vars.yaml
+    - install_nginx_vars.yaml
+    - docker_vars.yaml
+
+- hosts: run_nginx
+  become: yes
+  roles:
+    - common
+    - install_nginx
+    - run_nginx
+  vars_files:
+    - common_vars.yaml
+    - install_nginx_vars.yaml
+    - run_nginx_vars.yaml
+
+- hosts: docker_jenkins
+  become: yes
+  roles:
+    - common
+    - docker
+    - jenkins
+  vars_files:
+    - common_vars.yaml
+    - docker_vars.yaml
+    - jenkins_vars.yaml
+...

@@ -1,0 +1,10 @@
+---
+- name: Install common dependencies.
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: true
+
+    with_items:
+      - git
+...
