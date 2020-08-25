@@ -1,4 +1,11 @@
 ---
+
+
+
+- name: Check to see if the swarm has already been started.
+  docker_swarm_info:
+    nodes: yes
+
 - name: Initialise a new swarm.
   docker_swarm:
     state: present

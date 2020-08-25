@@ -43,21 +43,14 @@
       - docker-ce-cli
       - containerd.io
 
+- name: Add the ansible user to the docker group.
+    user:
+      name: "{{ ansible_user }}"
+      group: docker
+
 - name: Ensure that the docker service is enabled on boot.
   service:
     name: docker
     enabled: yes
     state: restarted
-
-- name: Check to see if the swarm has already been started.
-  docker_swarm_info:
-    nodes: yes
-  # We add this information to a new variable called swarm_info
-    register: swarm_info
-
-
-
-
-
-
 ...
