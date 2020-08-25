@@ -1,0 +1,26 @@
+---
+- name: Install ZSH
+  apt:
+    name: zsh
+    state: latest
+    update_cache: yes
+
+- name: Create a Developer Group
+  group:
+    name: developer
+    state: present
+
+- name: Create Bill's User
+  user:
+    name: billbaggins
+    comment: This is a custom linux user for BillBaggins@abcd.com
+    shell: /bin/zsh
+    groups: developer
+    append: yes
+
+- name: Create a Jenkins User
+  user:
+    name: jenkins
+    comment: This is a user for Jenkins automation.
+    shell: /bin/bash
+...
