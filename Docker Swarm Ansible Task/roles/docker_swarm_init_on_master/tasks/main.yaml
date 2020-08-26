@@ -4,10 +4,6 @@
   docker_swarm:
     state: present
 
-
-- name: "Retrieve the swarm join command, and save it in a global variable."
-  docker_swarm_info:
-  ignore_errors: yes
   register: docker_swarm_info
 
 - name: "DEBUG our docker swarm info BEFORE assigning it to a host."
@@ -18,6 +14,8 @@
   add_host:
     name: docker-swarm-info-host
     dockerinfo: docker_swarm_info
+    dockerjointokenworker: docker_swarm_info.swarm_facts.JoinToken.Worker
+    dockerjointokenmanager: docker_swarm_info.swarm_facts.JoinToken.Manager
 
 - name: "DEBUG RETRIEVE the variable information from our new host"
   debug:
@@ -25,4 +23,8 @@
 
 - name: "DEBUG RETRIEVE the worker token information from our new host"
   debug:
-    var: "{{ hostvars['docker-swarm-info-host']['dockerinfo'].swarm_facts.JoinTokens.Worker }}"
+    var: "{{ hostvars['docker-swarm-info-host']['dockerjointokenworker']}}"
+
+- name: "DEBUG RETRIEVE the worker token information from our new host"
+  debug:
+    var: "{{ hostvars['docker-swarm-info-host']['dockerjointokenmanager']}}"
