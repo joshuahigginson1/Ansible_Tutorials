@@ -52,7 +52,7 @@
     name: docker
     state: present
 
-- name: "Add the ansible user to the docker group."
+- name: "Add the ansible user to the docker linux group."
   user:
     name: "{{ ansible_user }}"
     group: docker
