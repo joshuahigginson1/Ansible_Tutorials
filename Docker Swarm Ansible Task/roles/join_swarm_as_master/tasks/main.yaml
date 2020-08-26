@@ -1,5 +1,5 @@
 ---
-- name: "Debug"
+- name: "DEBUG: Recover the variable information from our new host"
   debug:
     var: "{{ hostvars['docker_swarm_info_host'] }}"
 
