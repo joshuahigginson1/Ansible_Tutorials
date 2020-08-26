@@ -12,7 +12,7 @@
 - hosts: docker_swarm_masters
   become: yes
   roles:
-    - join_swarm_as_master
+    - join_swarm_as_manager
 
 - hosts: docker_swarm_workers
   become: yes
