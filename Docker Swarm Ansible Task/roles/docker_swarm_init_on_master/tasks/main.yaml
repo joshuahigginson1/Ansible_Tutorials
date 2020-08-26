@@ -9,3 +9,7 @@
   docker_swarm_info:
   register: docker_swarm_info
 
+- name: "Add a host, which stores our docker_swarm_info as a variable."
+  add_host:
+    name: 'docker_swarm_info'
+    docker_swarm_info: "{{ docker_swarm_info }}"
