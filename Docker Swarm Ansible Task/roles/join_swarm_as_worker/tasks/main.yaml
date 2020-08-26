@@ -1,10 +1,5 @@
 ---
 
-- name: "DEBUG RETRIEVE the variable information from our new host"
-  debug:
-    var: "{{ hostvars.  }}"
-
-
 - name: "Add a new worker node to our swarm."
   docker_swarm:
     state: join

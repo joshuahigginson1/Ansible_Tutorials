@@ -21,4 +21,4 @@
 
 - name: "DEBUG RETRIEVE the variable information from our new host"
   debug:
-    var: {{ hostvars['docker-swarm-info-host'] }}
+    var: "{{ hostvars['docker-swarm-info-host'] }}"
