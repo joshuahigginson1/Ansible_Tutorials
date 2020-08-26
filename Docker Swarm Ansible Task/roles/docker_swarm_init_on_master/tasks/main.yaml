@@ -1,11 +1,11 @@
 ---
 
-- name: Initialise a new swarm on the master node.
+- name: "Initialise a new swarm on the master node."
   docker_swarm:
     state: present
 
 
-- name: Retrieve the swarm join command, and save it in a global variable.
+- name: "Retrieve the swarm join command, and save it in a global variable."
   docker_swarm_info:
   register: docker_swarm_info
 
