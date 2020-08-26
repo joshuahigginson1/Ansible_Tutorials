@@ -1,14 +1,15 @@
 ---
 - name: "Remove any older, conflicting docker packages."
   apt:
-    name: "{{ items }}"
+    name: "{{ item }}"
     state: absent
-    with_items:
-      - docker
-      - docker-engine
-      - docker.io
-      - containerd
-      - runc
+
+  with_items:
+    - docker
+    - docker-engine
+    - docker.io
+    - containerd
+    - runc
 
 
 - name: "Install Docker's dependencies."
@@ -35,13 +36,14 @@
 
 - name: Install Docker
   apt:
-    name: "{{ items }}"
+    name: "{{ item }}"
     state: present
     update_cache: yes
-    with_items:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
+
+  with_items:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
 
 - name: "Add the ansible user to the docker group."
   user:
