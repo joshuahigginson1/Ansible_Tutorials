@@ -14,8 +14,8 @@
   add_host:
     name: docker-swarm-info-host
     dockerinfo: docker_swarm_info
-    dockerjointokenworker: docker_swarm_info.swarm_facts.JoinTokens.Worker
-    dockerjointokenmanager: docker_swarm_info.swarm_facts.JoinTokens.Manager
+    dockerjointokenworker: "{{ docker_swarm_info.swarm_facts.JoinTokens.Worker }}"
+    dockerjointokenmanager: "{{ docker_swarm_info.swarm_facts.JoinTokens.Manager }}"
 
 - name: "DEBUG RETRIEVE the variable information from our new host."
   debug:

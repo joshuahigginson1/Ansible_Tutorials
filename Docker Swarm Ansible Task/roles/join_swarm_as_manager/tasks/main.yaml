@@ -4,5 +4,5 @@
   docker_swarm:
     state: join
     join_token: "{{ hostvars['docker-swarm-info-host']['dockerjointokenmanager'] }}"
-    remote_addrs: [ '{{ groups.docker-swarm-init-master[0] }}' ]
+    remote_addrs: [ "{{ groups.docker-swarm-init-master[0] }}" ]
 ...
