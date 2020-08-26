@@ -44,9 +44,9 @@
       - containerd.io
 
 - name: "Add the ansible user to the docker group."
-    user:
-      name: "{{ ansible_user }}"
-      group: docker
+  user:
+    name: "{{ ansible_user }}"
+    group: docker
 
 - name: "Ensure that the docker service is enabled on boot."
   service:
