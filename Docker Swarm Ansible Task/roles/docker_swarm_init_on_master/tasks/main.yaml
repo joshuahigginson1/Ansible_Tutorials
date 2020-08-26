@@ -17,5 +17,4 @@
 - name: "Add a host, which stores our docker_swarm_info as a variable."
   add_host:
     name: docker-swarm-info-host
-    group: dockerswarminfogroup
-    docker_swarm_info: "{{ docker_swarm_info }}"
+    dockerinfo: docker_swarm_info
