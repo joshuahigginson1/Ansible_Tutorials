@@ -4,17 +4,17 @@
   roles:
     - install_docker
 
-- hosts: docker-swarm-init-master
+- hosts: dockerswarminitmaster
   become: yes
   roles:
     - docker_swarm_init_on_master
 
-- hosts: docker-swarm-masters
+- hosts: dockerswarmmasters
   become: yes
   roles:
     - join_swarm_as_master
 
-- hosts: docker-swarm-workers
+- hosts: dockerswarmworkers
   become: yes
   roles:
     - join_swarm_as_worker
