@@ -25,4 +25,4 @@
 
 - name: "DEBUG RETRIEVE the worker token information from our new host"
   debug:
-    var: "{{ hostvars['docker-swarm-info-host']['dockerinfo']['docker_swarm_info']['swarm_facts']['JoinTokens']['Worker'] }}"
+    var: "{{ hostvars['docker-swarm-info-host']['dockerinfo'].swarm_facts.JoinTokens.Worker }}"
