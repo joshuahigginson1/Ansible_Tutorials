@@ -10,6 +10,10 @@
   ignore_errors: yes
   register: docker_swarm_info
 
+- name: "DEBUG"
+  debug:
+    var: docker_swarm_info
+
 - name: "Add a host, which stores our docker_swarm_info as a variable."
   add_host:
     name: 'docker_swarm_info'
