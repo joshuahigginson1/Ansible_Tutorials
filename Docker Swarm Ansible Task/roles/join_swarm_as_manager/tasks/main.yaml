@@ -1,5 +1,4 @@
 ---
-
 - name: "Add a new manager node to our swarm."
   docker_swarm:
     state: join
