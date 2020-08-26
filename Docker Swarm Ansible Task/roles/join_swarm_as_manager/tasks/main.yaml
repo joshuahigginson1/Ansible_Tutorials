@@ -2,7 +2,8 @@
 - name: "Add a new manager node to our swarm."
   docker_swarm:
     state: join
-    join_token: "{{ hostvars['docker-swarm-info-host
-    ']['dockertokenstrmanager'].results[0].stdout }}"
-    remote_addrs: [ "{{ groups.docker-swarm-init-master[0] }}" ]
+    debug: yes
+    remote_addrs: "{{ hostvars[groups.docker_swarm_init_master[0]]['ansible_default_ipv4']['address'] }}"
+    advertise_addr: "{{ ansible_default_ipv4['address'] }}"
+    join_token: "{{ hostvars['docker-swarm-info-host']['dockertokenstrmanager'] }}"
 ...

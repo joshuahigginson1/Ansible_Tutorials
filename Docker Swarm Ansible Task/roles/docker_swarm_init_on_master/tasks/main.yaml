@@ -16,8 +16,8 @@
     dockerinfo: docker_swarm_info
     dockertokendictworker: docker_swarm_info.swarm_facts.JoinTokens.Worker
     dockertokendictmanager: docker_swarm_info.swarm_facts.JoinTokens.Manager
-    dockertokenstrworker: "{{ docker_swarm_info.swarm_facts.JoinTokens.Worker}}"
-    dockertokenstrmanager: "{{ docker_swarm_info.swarm_facts.JoinTokens.Manager}}"
+    dockertokenstrworker: "{{ docker_swarm_info.swarm_facts.JoinTokens.Worker }}"
+    dockertokenstrmanager: "{{ docker_swarm_info.swarm_facts.JoinTokens.Manager }}"
 
 - name: "DEBUG -> RETRIEVE the SWARM INFO from our new host."
   debug:
