@@ -2,6 +2,6 @@
 - name: "Add a new worker node to our swarm."
   docker_swarm:
     state: join
-    join_token: "{{ hostvars['docker-swarm-info-host']['dockerjointokenworker']  }}"
+    join_token: "{{ hostvars['docker-swarm-info-host']['dockertokenstrworker'] }}"
     remote_addrs: [ "{{ groups.docker-swarm-init-master[0] }}" ]
 ...

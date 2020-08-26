@@ -2,6 +2,6 @@
 - name: "Add a new manager node to our swarm."
   docker_swarm:
     state: join
-    join_token: "{{ hostvars['docker-swarm-info-host']['dockerjointokenmanager'] }}"
+    join_token: "{{ hostvars['docker-swarm-info-host']['dockertokenstrmanager'] }}"
     remote_addrs: [ "{{ groups.docker-swarm-init-master[0] }}" ]
 ...
