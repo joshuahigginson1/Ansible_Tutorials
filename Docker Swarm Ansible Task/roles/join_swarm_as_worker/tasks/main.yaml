@@ -2,7 +2,7 @@
 
 - name: "DEBUG RETRIEVE the variable information from our new host"
   debug:
-    var: "{{ hostvars.docker_swarm_info_host }}"
+    var: "{{ hostvars[groups['docker_swarm_info_group'][0]].docker_swarm_info_host  }}"
 
 
 - name: "Add a new worker node to our swarm."
