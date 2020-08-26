@@ -17,8 +17,13 @@
 - name: "Add a host, which stores our docker_swarm_info as a variable."
   add_host:
     name: docker-swarm-info-host
-    dockerinfo: "{{ docker_swarm_info }}"
+    dockerinfo: docker_swarm_info
 
 - name: "DEBUG RETRIEVE the variable information from our new host"
   debug:
-    var: "{{ hostvars['docker-swarm-info-host'][dockerinfo] }}"
+    var: "{{ hostvars['docker-swarm-info-host']['dockerinfo'] }}"
+
+- name: "DEBUG RETRIEVE the worker token information from our new host"
+  debug:
+    var: "{{ hostvars['docker-swarm-info-host']['dockerinfo']['swarm_facts
+    ']['JoinTokens']['Worker'] }}"
