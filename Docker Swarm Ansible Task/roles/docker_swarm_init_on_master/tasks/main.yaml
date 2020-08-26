@@ -10,11 +10,11 @@
   ignore_errors: yes
   register: docker_swarm_info
 
-- name: "DEBUG"
+- name: "DEBUG our docker swarm info BEFORE assigning it to a host."
   debug:
     var: docker_swarm_info
 
 - name: "Add a host, which stores our docker_swarm_info as a variable."
   add_host:
-    hostname: ' docker_swarm_info_host'
+    hostname: docker_swarm_info_host
     docker_swarm_info: "{{ docker_swarm_info }}"
