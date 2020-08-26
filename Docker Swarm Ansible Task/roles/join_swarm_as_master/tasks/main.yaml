@@ -1,7 +1,7 @@
 ---
 - name: "Debug"
   debug:
-    var: "{{ hostvars['docker_swarm_info'] }}"
+    var: "{{ hostvars['docker_swarm_info_host'] }}"
 
 - name: "Add a new manager node to our swarm."
   docker_swarm:
