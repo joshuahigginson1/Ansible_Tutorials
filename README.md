@@ -9,6 +9,9 @@ My configuration management repository used for testing configuration management
   - [Ansible Concepts](#ansible-concepts)
   - [Installing Ansible On Linux](#installing-ansible-on-linux)
   - [Configuring Ansible on a Windows Server](#configuring-a-windows-server-for-ansible-connectivity)
+  - [Inventory](#inventory)
+  - [Host Patterns](#host-patterns)
+
 
 ## Ansible
 
@@ -105,6 +108,129 @@ A **command and control machine** is the central host on which you are running A
 
 ## Configuring a Windows Server for Ansible Connectivity
 
+First, we must install a python module with with pip called "pywinrm".
+
+    pip3 install pywinrm
+
+We need to have a number of different ansible variables configured for each host.
+
+https://docs.ansible.com/ansible/latest/user_guide/windows_winrm.html
+
+WinRM requires port 5986 to be open on our windows firewall.
+
+The final step is to connect to our windows server, and run the following powershell script.
+
+https://github.com/ansible/ansible/blob/devel/examples/scripts/ConfigureRemotingForAnsible.ps1
+
+Start a powershell terminal as an admin and drag the ps1 file into it.
+
+Details for debugging your connection to windows can be found here.
+
 https://docs.ansible.com/ansible/latest/user_guide/windows_setup.html
 
+## Inventory
 
+https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html
+
+Because it is agentless, Ansible needs to explicitly know the location and identity of servers in which to manage.
+
+Ansible keeps this information in an **inventory file**.
+
+Inventories are most commonly laid out in **INI** or **YAML** format.
+
+YAML files take longer to write, but are better suited for larger inventories with multiple subgroups.
+
+Within this inventory file, you have the ability to designate your node machines into groups.
+
+A group allows you to have a set of servers for a specific role.
+
+There are two default groups. **All** and **ungrouped**. Every host will **always** belong to at least two groups.
+
+    # Inventory INI File
+    mail.example.com
+
+    [webservers]  <-- Group
+    foo.example.com
+    bar.example.com`
+
+    [dbservers]  <-- Group
+    one.example.com
+    two.example.com
+    three.example.com
+
+More on nested groups:  https://www.programmersought.com/article/5068620909/
+
+You can easily assign variables to a single host in line, for use later in a playbook.
+
+    [atlanta]
+    host1 http_port=80 maxRequestsPerChild=808
+    host2 http_port=303 maxRequestsPerChild=909
+
+### Variable Files
+
+It is possible to store group variables in this inventory file, set with the :vars suffix. 
+
+However, it is better practice to store the host and group specific variables in their own files.
+
+Host and group variable files must use YAML syntax. 
+
+Ansible loads these host and group variable files by searching paths **relative** to your inventory file.
+If your inventory file at /ansible/hosts contains a host named ‘foosball’ that belongs to two groups, ‘raleigh’ and ‘webservers’, that host will use variables in YAML files at the following locations:
+
+    /ansible/group_vars/raleigh
+    /ansible/group_vars/webservers
+    /ansible/host_vars/foosball
+
+The name of the variable file should always match the host or group name.
+
+### Connecting to Remote Hosts
+
+Ansible has a number of preferred ways in order to connect to a server.
+
+The default connection method for Linux is SSH.
+
+The default connection method for Windows is WinRM.
+
+Ansible allows per host and per group connection settings.
+
+If all hosts share the same connection settings, you can use the main ansible.cfg file in order to speed up this process.
+
+Within the ansible.cfg file, find the "private_key_file" setting, and alter the path to  a .pem file.
+
+### Dynamic Inventory
+
+Dynamic Inventory allows you to use an executable to automatically get your inventory from another location. 
+
+This could be an API for a cloud platform, an external database, or anywhere else.
+
+There are a number of dynamic inventory scripts that have been created for different cloud providers on the Ansible website. 
+
+_AWS_
+https://aws.amazon.com/blogs/apn/getting-started-with-ansible-and-dynamic-amazon-ec2-inventory-management/
+
+_Azure_
+https://docs.microsoft.com/en-us/azure/developer/ansible/dynamic-inventory-configure?tabs=ansible
+
+_GCP_
+https://medium.com/@Temikus/ansible-gcp-dynamic-inventory-2-0-7f3531b28434
+
+The alternative method for accessing dynamic inventory is through the use of an **inventory plugin**. 
+
+https://docs.ansible.com/ansible/latest/plugins/inventory.html#inventory-plugins
+
+https://medium.com/faun/learning-the-ansible-aws-ec2-dynamic-inventory-plugin-59dd6a929c7f
+
+## Host Patterns
+
+Ansible has a very flexible way of addressing different hosts, through pattern matching syntax.
+
+    test1:test2  # OR pattern, the hest exists in test1 or test2.
+    
+    all  # ALL hosts.
+    *  # ALL hosts.
+    
+    test1:!test2  # NOT pattern, the host exists in test 1 and not test2.
+    
+    test1:&test2  # AND pattern, the host exists in both test1 and test2.
+    
+    ~(web|db).*\.test\.com  # REGEX pattern, the host is web.test.com or db.test.com.
