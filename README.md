@@ -116,6 +116,13 @@ We need to have a number of different ansible variables configured for each host
 
 https://docs.ansible.com/ansible/latest/user_guide/windows_winrm.html
 
+    ansible_user=Administrator
+    ansible_password=<password>
+    ansible_port=5986
+    ansible_connection=winrm
+    ansible_winrm_transport=basic
+    ansible_winrm_server_cert_validation=ignore
+
 WinRM requires port 5986 to be open on our windows firewall.
 
 The final step is to connect to our windows server, and run the following powershell script.
@@ -123,6 +130,10 @@ The final step is to connect to our windows server, and run the following powers
 https://github.com/ansible/ansible/blob/devel/examples/scripts/ConfigureRemotingForAnsible.ps1
 
 Start a powershell terminal as an admin and drag the ps1 file into it.
+
+You can ignore the winrm certificate signing process entirely using the following variable:
+
+    ansible_winrm_server_cert_validation=ignore
 
 Details for debugging your connection to windows can be found here.
 
