@@ -1,2 +1,2 @@
-# Ansible Tutorials
-A simple repository, used for testing ansible + git workflow!
+# Configuration Management
+A repository used for testing configuration management tools.
