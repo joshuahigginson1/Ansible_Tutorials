@@ -11,6 +11,7 @@ My configuration management repository used for testing configuration management
   - [Configuring Ansible on a Windows Server](#configuring-a-windows-server-for-ansible-connectivity)
   - [Inventory](#inventory)
   - [Host Patterns](#host-patterns)
+  - [Modules](#modules)
 
 
 ## Ansible
@@ -245,3 +246,21 @@ Ansible has a very flexible way of addressing different hosts, through pattern m
     test1:&test2  # AND pattern, the host exists in both test1 and test2.
     
     ~(web|db).*\.test\.com  # REGEX pattern, the host is web.test.com or db.test.com.
+
+## Modules
+
+Modules in Ansible are an individual unit of work. 
+
+They represent things such as creating files, virtual machines, editing firewalls. Just about everything you could need.
+
+Modules accept arguments as key-value pairs.
+
+If you need something custom, Ansible allows custom modules to be written with any language, capable of writing JSON to standard output.
+
+Ansible contains a program called test-module which allows you to test modules that you create on a local machine.
+
+You can write modules in any language you want, but files can get quite complicated, quite quickly.
+
+When you are ready to use these modules, you can copy them over to any of the directories mentioned in the $ANSIBLE_LIBRARIES environment variable.
+
+If you add a 'library' directory in the same directory as your top level playbook, then your modules will also be included.
