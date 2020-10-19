@@ -10,5 +10,4 @@ end
 
 file '/var/www/html/index.html' do
   content '<html>My Website!</html>'
-
 end

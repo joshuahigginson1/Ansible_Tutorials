@@ -710,3 +710,39 @@ Shell_out works cross platform, however the commands you declare and try to run 
     end
 
 A list of all DSL recipes: https://docs.chef.io/dsl_recipe.html
+
+## Setting Up a Chef Workstation
+
+If you are a Ruby developer, you probably have a development environment setup.
+
+We use Kitchen to configure virtual machines for testing. Start by installing the Chef Development Kit on your chosen developer workstation.
+
+https://downloads.chef.io/products/chefdk
+
+In the terminal, we can create a Chef Repo with the following command:
+
+    chef generate repo <repo_name>
+
+To generate a minimalist template cookbook, you can use the following command:
+
+    chef generate cookbook <cookbook_name>
+
+To create a full directory structure for your cookbook, you can use the following command. :
+
+    knife cookbook create
+
+To execute a recipe and test your code, you can use the kitchen tool. In order to set up kitchen, you must edit the .kitchen.yaml file.
+
+The driver is the tool which we are using to provision our test nodes.
+
+The provisioner for a development workstation should be set to chef_zero. This is a simple in-memory version of the Chef Server used for development and testing. 
+
+We also need to make sure to add a 'run_list' to our suites.
+
+To run kitchen, cd into your cookbook and use the following command. This will automatically provision a test kitchen node using your provisioned driver.
+
+    kitchen converge
+
+To tear down our test infrastructure, cd into your cookbook and use the following command:
+
+    kitchen destroy
