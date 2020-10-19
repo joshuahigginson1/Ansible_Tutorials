@@ -19,7 +19,7 @@ My configuration management repository used for testing configuration management
   - [Chef Architecture](#high-level-architecture)
   - [Chef Development Kit](#the-chef-development-kit)
   - [Anatomy Of A Cookbook](#the-anatomy-of-a-cookbook)
-
+  - [Setting Up a Chef Workstation](#setting-up-a-chef-workstation)
 
 
 
