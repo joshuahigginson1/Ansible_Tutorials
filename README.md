@@ -562,3 +562,151 @@ It is best practice to use the ".erb" extension for files.
 The **metadata.rb** file contains information related to the cookbook itself. It contains things like the cookbook name, description, and the version of the cookbook, which is important to the Chef server. 
 
 It also stores any gems to be installed, the allowed version of the chef-client, and a list of any dependent cookbooks.
+
+## The Recipe DSL
+
+Chef uses a ruby based domain specific language. This is a language used for a specific purpose.
+
+A resource is simply a ruby block - A section of code.
+
+Most attributes will have a default value, which means that you are only required to used an attribute if you want to change the default.
+
+Actions will always have a default.
+
+A symbol : is just like a constant value. 
+
+If you are ever unsure of what actions and symbols that something requires, you can look it up at docs.chef.io.
+
+    # Installing the latest package:
+    package 'tree'
+
+    # Installing a specific version.
+    package 'tree' do
+      version '1.7.0-3'
+      action :install
+    end
+
+    # Create a cron job.
+    cron 'cookbooks_report' do
+      action node.tags.include?('cooknooks-report') ? :create : :delete
+    
+    minute '0'
+    hour '0'
+    weekday '1'
+    user 'getchef'
+    mailto 'sysadmin@example.com'
+    home '/srv/supermarket/shared/system'
+    command %W{
+      cd /srv/supermarket/current &&
+      env RUBYLIB="/srv/supermarket/current/lib"
+      RAILS_ASSET_ID=`git rev-parse HEAD` RAILS_ENV="#{rails_env}"
+      bundle exec rake cookbooks_report
+    }.join(' ')
+
+    # Create a Windows Service
+
+    windows_service 'BITS' do
+      action :configure_startup
+      startup_type :manual
+    end
+
+    # Using if and case statements for flow control.
+    
+    if node['platform'] == 'ununtu'
+      # Do ubuntu things.
+    end
+    
+    case node['platform']
+      when 'debian', 'ubuntu'
+        # do Debian/ Ubuntu things.
+
+      when 'redhat', 'centos', 'fedora'
+        # do Redhat/ Centos/ Fedora things.
+    end
+
+    # Installing Web Server Packages across different Linux distros.
+
+    web_server_package = case node['platform']
+      when 'debian', 'ubuntu'
+        'apache2'
+      when 'redhat', 'centos', 'fedora'
+        'httpd'
+    end
+
+The Chef Ruby DSL has a couple of tricks to simplify working with platforms.
+
+    if platform?('windows')
+      ruby_block 'copy libmysql.dll into ruby path' do
+        block do
+          require 'fileutils;
+          FileUtils.cp "#node['mysql']['client']['lib_dir']}\\libmysql.dll",
+            node['mysql']['client']['ruby_dir']
+        end
+        not_if { File.exist?("#{node['mysql' ['client']['ruby_dir']}\\libmysql.dll") })
+      end
+    end
+
+The platform_family? method groups distributions that are part of the same method.
+
+    if platform_family?('rhel')
+      # do RHEL things
+    end
+
+The "value_for_platform" Methods allow you to more easily set platform specific values.
+
+    package_name = value_for_platform(
+      ['centos', 'redhat', 'suse', 'fedora' ] => {
+         'default' => 'httpd'
+      },
+      ['ubuntu', 'debian'] => {
+        'default' => 'apache2'
+      }
+    )
+
+    package_name = value_for_platform_family(
+      ['rhel', 'fedora', 'suse'] => 'httpd-devel',
+        'debian' => 'apache2-dev'
+    )
+
+The "include_recipe" method allows you to include an existing recipe into your own, wherever the method was called.
+
+    include_recipe 'apache2::mod_ssl'
+
+The 'attribute' method is used to make sure that resources will always have a specific attribute set.
+
+    if node.attribute?('ipaddress')
+      # This code will execute if the code has an IP address in a specific range.
+    end
+
+The data_bag and data_bag_item methods can be used to call or store data bags. These are global objects, containing JSON data in which your node might need access to. 
+
+This could be usernames, access tokens, connection strings etc. 
+
+The data bag supports encryption.
+
+    # Resource File
+    data_bag('users').each do |user|
+      data_bag_item('users', user)
+    end
+
+    # Data Bag File
+    Data Bag: users
+      john_smith.json
+        {"first_name": "John",
+          "surname": "Smith"}
+      martha_jones.json
+        {"first_name": "Martha",
+         "surname": "Jones"}
+
+Ideally, you will use a resource in order to configure a node. however, it is possible that you may come across a task in which you simply need to use a shell command.
+
+The "shell_out" method allows you to run a shell command, without worrying about how to fetch the standard output and error.
+
+Shell_out works cross platform, however the commands you declare and try to run may not. 
+
+    some_command = shell_out("some_command some_argument")
+    if some_command.exitstatus == 0
+      # Run a command.
+    end
+
+A list of all DSL recipes: https://docs.chef.io/dsl_recipe.html
