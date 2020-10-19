@@ -16,6 +16,8 @@
         - mysql-common
         - mysql-client
         - libapache2-mod-wsgi
+        - python3
+        - python3-pip
 
     - name: Start Services
       service:
@@ -30,6 +32,49 @@
 
     - name: Enable Default HTTPS site
       shell: a2ensite default-ssl
+
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
+
+    # Database
+    - name: Install Python MySQL Library
+      apt:
+        name: python-mysqldb
+        state: present
+
+    - name: Create MySQL User
+    mysql_user:
+      name: appuser
+      password: <NOTTHEPASSWORD>
+      priv: "*.*:ALL"
+      state: present
+
+    - name: Create MySQL Database
+      mysql_db:
+        name: appdata
+        state: present
+
+    # Install Application Code
+    - name: Download App
+      git:
+        repo: https://github.com/whelmed/ansible_demo.git
+        dest: /tmp/webapp
+
+    - name: Install App Requirements
+      pip:
+        requirements: /tmp/webapp/app/requirements.txt
+
+    # Configure Website
+
+    - name: Copy App to Apache Owner Folder
+      shell: "rsync -av /tmp/webapp/app/ /var/www/webapp"
+
+    - name: Copy Apache Config File
+      copy:
+        src: "apache.conf"
+        dest: "/etc/apache2/sites-available/000-default.conf"
 
     - name: Restart Apache
       service:
