@@ -14,6 +14,13 @@ My configuration management repository used for testing configuration management
   - [Modules](#modules)
   - [Handlers, Facts, Variables, and Templates](#handlers-facts-variables-and-templates)
   - [Roles](#roles)
+  - [Errors](#errors)
+- [Chef](#chef)
+  - [Chef Architecture](#high-level-architecture)
+  - [Chef Development Kit](#the-chef-development-kit)
+
+
+
 
 ## Ansible
 
@@ -374,4 +381,96 @@ To create a role structure, you can use the ansible-galaxy command.
     ansible-galaxy init <name_of_role>
     
 When ansible looks for specific files in a role, then they expect to see the default names provided by ansible-galaxy.
+
+## Errors
+
+When a task in Ansible fails, the error fails. 
+
+Sometimes an error isn't all that important. You can use the 'ignore_errors' property to ignore any errors. 
+
+We use a **'failed_when'** statement in conjunction with a 'register' statement.
+
+First, we have to register the output of our module that is expecting a failure.
+
+We then use the 'failed_when' statement to declare our failure. Any Jinja2 statement will work.
+
+### Debugging
+
+The debug module was a module first created by the ansible community in an effort to aid with debugging playbooks. 
+
+## Chef
+
+Chef is a better way to manage all of your servers at the same time. It is a way to configure servers consistently whilst preventing configuration drift.
+
+Chef is both the name of the configuration management software, and the name of the company that created it. It used to be called ox-code.
+ 
+Chef has several products that revolve around the configuration management problem; Chef, Inspec, and habitat.
+
+Chef is a platform that allows you to automate the creation, configuration, and management of your infrastructure.
+
+Chef can also communicate with cloud providers such as AWS, Google, and Microsoft Azure using Infrastructure as Code.
+
+Companies that use Chef include: Gannett, Facebook, Intuit, Riot Games.
+
+### High Level Architecture
+
+There are three core components of Chef.
+
+A **workstation** is a computer that the chef development kit is installed. It is where developers write and test their code which chef uses to manage servers.
+
+Chef uses a client server architecture. There are two components, a server, and clients.
+
+The **chef server** is a central hub where all of your automation code lives, and is responsible for knowing all about the **nodes** in which it manages.
+
+Chef is capable of managing all different types of devices, not just servers.
+ 
+Once code is on the Chef server, you can instruct a node to download this code from the Chef server and execute it.
+￼
+### The Chef Development Kit
+
+The development kit has everything required to develop with chef. 
+
+The **chef executable** is used to:
+- Generate code templates.
+- Run system commands.
+- Install Ruby gems into the development kit environment. (Ruby's Package Manager.
+
+The **chef-client** is the driving force behind nodes. It is an executable that can also be run as a service. It is responsible for:
+- Registering and authenticating a node.
+- Synchronising code from the Chef server to the node.
+- Making sure that the node is configured correctly.
+
+**Ohai** is a tool for gathering information about the node it is running on. It is automatically run by the chef-client, and the information it gathers is available to a developer in code.
+
+Ohai attributes are saved on the Chef Server, which allows you to use them in order to search for nodes based on those values. It collects information such as:
+- Platform Details.
+- Network, Memory, and CPU usage.
+- Host Names and FQDN.
+- Virtualisation Data.
+- Cloud Provider Details.
+
+**Knife** is a tool used to interact with the chef server in order to do things like uploading code from a workstation, setting global variables, and bootstrap the chef-client onto nodes. It can even provision cloud infrastructure. 
+
+**Kitchen** is used for testing the Chef code in which you develop. It gives you the power to run code against multiple platforms.
+
+**Berkshelf** is a dependency management tool, that allows you to download code which is shared with the community, from the Chef Supermarket.
+
+#### The Chef Server
+￼
+The Chef Server acts as a central hub that our nodes look to for the latest configuration data. It is a restful API that allows authenticated users to interact with different endpoints.
+
+For the most part, we don't interact with the Chef API directly. Instead, we use the tools built around the API.
+
+**Chef Web Management UI** - Interact with the API via a web server.
+
+**Chef-client** - This is how nodes interact with the server. Nodes grab what ever they need from the server, and then perform any configuration on the node directly, in order to reduce the amount of work in which our server needs to perform at any one time. 
+
+**Knife** - Used to interact with the web server. 
+
+#### Nodes
+
+A node is a generic name for devices running the chef-client software. This could be a physical device, a virtual server, a network device, or a container. 
+
+The **chef-client** is responsible fro making sure that the node is authenticated and registered with the chef server, using RSA public key pairs. Once a node is registered with the chef server, then it can access the server's data and configuration information. 
+
 
