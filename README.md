@@ -321,3 +321,18 @@ In order to call this handler, we also have to add a notify tag to any task in w
         dest: /etc/apache2/sites-available/000-default.conf
       notify: restart apache
   
+### Cleaning up Hardcoded Strings:
+
+Variables allow for modular code and are very flexible You can set default variables within your code, but override it at the command line.  Ansible can fetch variables from different locations. Because of this, it has a very specific order of precedence. 
+
+You can set variables in the 'vars' section of your play. 
+
+    vars:
+      app_download_dest: a
+      app_dest: b
+
+You declare variables using Jinja2 style curly braces. 
+
+    key: "{{ variable }}"
+    
+    

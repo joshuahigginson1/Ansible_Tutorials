@@ -2,6 +2,10 @@
 - hosts: lamp
   remote_user: ubuntu
   become: true  # SUDO
+  vars:
+    app_download_dest: "/tmp/webapp"
+    app_dest: "/var/www/webapp"
+    app_repo: "https://github.com/whelmed/ansible_demo.git"
 
   tasks:
   - name: Install Packages
@@ -55,17 +59,17 @@
     # Install Application Code
   - name: Download App
     git:
-      repo: https://github.com/whelmed/ansible_demo.git
-      dest: /tmp/webapp
+      repo: "{{ app_repo }}"
+      dest: "{{ app_download_dest }}"
 
   - name: Install App Requirements
     pip:
-      requirements: /tmp/webapp/app/requirements.txt
+      requirements: {{ app_download_dest }}/app/requirements.txt
 
     # Configure Website
 
   - name: Copy App to Apache Owner Folder
-    shell: "rsync -av /tmp/webapp/app/ /var/www/webapp"
+    shell: "rsync -av {{ app_download_dest }}/app/ {{ app_dest }}"
 
   - name: Copy Apache Config File
     copy:
