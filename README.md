@@ -12,6 +12,7 @@ My configuration management repository used for testing configuration management
   - [Inventory](#inventory)
   - [Host Patterns](#host-patterns)
   - [Modules](#modules)
+  - [Handlers, Facts, Variables, and Templates](#handlers-facts-variables-and-templates)
 
 ## Ansible
 
@@ -278,7 +279,11 @@ When you are ready to use these modules, you can copy them over to any of the di
 
 If you add a 'library' directory in the same directory as your top level playbook, then your modules will also be included.
 
-## Loops
+
+
+## Handlers, Facts, Variables, and Templates
+
+### Loops
 
 In a playbook, ansible lets you loop over a list of items using the 'with_items' property.
 
@@ -296,3 +301,23 @@ In a playbook, ansible lets you loop over a list of items using the 'with_items'
         - mysql-client
         - libapache2-mod-wsgi 
 
+### Cleaning up duplicated tasks:
+
+A handler is a task that is called whenever it has been notified of a change. For example, you would always want to restart Apache2 whenever the config file changes.
+
+Handlers are only ever called when they are needed. they are defined as so:
+
+    handlers:
+      - name: restart apache
+        service:
+          - name: apache2
+            state: restarted
+
+In order to call this handler, we also have to add a notify tag to any task in which we want our handler to run afterwards.
+
+    - name: Copy Apache Configuration File
+      copy:
+        src: "apache.conf:
+        dest: /etc/apache2/sites-available/000-default.conf
+      notify: restart apache
+  
