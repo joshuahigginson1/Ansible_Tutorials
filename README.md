@@ -18,6 +18,7 @@ My configuration management repository used for testing configuration management
 - [Chef](#chef)
   - [Chef Architecture](#high-level-architecture)
   - [Chef Development Kit](#the-chef-development-kit)
+  - [Anatomy Of A Cookbook](#the-anatomy-of-a-cookbook)
 
 
 
@@ -456,7 +457,7 @@ Ohai attributes are saved on the Chef Server, which allows you to use them in or
 **Berkshelf** is a dependency management tool, that allows you to download code which is shared with the community, from the Chef Supermarket.
 
 #### The Chef Server
-￼
+
 The Chef Server acts as a central hub that our nodes look to for the latest configuration data. It is a restful API that allows authenticated users to interact with different endpoints.
 
 For the most part, we don't interact with the Chef API directly. Instead, we use the tools built around the API.
@@ -471,6 +472,93 @@ For the most part, we don't interact with the Chef API directly. Instead, we use
 
 A node is a generic name for devices running the chef-client software. This could be a physical device, a virtual server, a network device, or a container. 
 
-The **chef-client** is responsible fro making sure that the node is authenticated and registered with the chef server, using RSA public key pairs. Once a node is registered with the chef server, then it can access the server's data and configuration information. 
+The **chef-client** is responsible for making sure that the node is authenticated and registered with the chef server, using RSA public key pairs.
+
+Once a node is registered with the chef server, then it can access the server's data and configuration information. 
 
 
+#### Chef Repo
+
+A Chef repo is a directory in which your cookbook resides. It also has space for things other than cookbooks, such as environments, data bags, and roles.
+
+The only thing required to create a chef repo is that the directories match what is expected. 
+
+You could create the chef repo manually, however the easy way is to use a Chef command.
+
+Your Chef repo should be under version-control. 
+
+### The Anatomy of a Cookbook
+
+The code to automate our configuration management commands in Chef resides in something called a cookbook. It is a package for your automation code.  Recipes
+
+Recipes contain the configuration code and is written in Ruby. 
+
+You can create dependent recipes that allow you to expand on an existing recipe from the Chef Supermarket.
+
+The code written inside of a recipe is based on resources, which represent the **desired configuration for a specific aspect of a node**.
+
+    # Installing a package
+    package 'nginx' do
+      action :install
+    end
+
+    # Start a service
+    service 'nginx' do
+      action [:enable, :start]
+    end
+
+All a user needs to do is set the desired state, and chef will be able to move from the current state, to the desired state.
+
+### Custom Resources
+
+As of Chef version 12.5, Chef allows engineers to create custom resources for their application. 
+
+### Definitions
+
+Definitions are an older implementation of custom resources, and are akin to a compile-time macro across multiple recipes.
+
+ There are a few properties that a definition does not support, such as 'notifies', 'subscribes', 'not_if', and 'only_if'.
+
+### Attributes
+
+**Attributes** are details about a node, related to its state. Think of them as variables.
+
+Some attributes are set automatically by Ohai, such as IP Address, Host Name, Host OS, and Host Platform.
+
+Some attributes can be set by the developer.
+
+There are 6 types of attribute, and they have different presence. Default and Automatic are the most common types.
+
+They can be sourced from:
+
+- Nodes (Fetched with Ohai when chef-client runs)
+- Attribute Files
+- Recipes
+- Environments
+- Roles
+
+    # Attribute File
+    default['database']['username'] = 'database_user'
+    default['database']['dbname'] = 'my_database'
+
+**Files** in Chef are just files in which you would like to deploy to nodes. You can do this with the 'cookbook_file' resource.
+
+    # Cookbook File
+    cookbook_file '/var/www/html/index.html' do
+      source 'index.html.erb
+      owner 'www-data'
+      group 'www-data'
+      action :create
+    end
+
+**Templates** are similar to files, except they allow programming logic within them. They reside in the templates subdirectory of the cookbook.
+
+They use ERB templates, based on the **Erubis** template engine. 
+
+It is best practice to use the ".erb" extension for files.
+
+**Libraries** are ruby files that are used to add new functionality to your recipes. Anything that you can do in ruby can be added to a library.
+
+The **metadata.rb** file contains information related to the cookbook itself. It contains things like the cookbook name, description, and the version of the cookbook, which is important to the Chef server. 
+
+It also stores any gems to be installed, the allowed version of the chef-client, and a list of any dependent cookbooks.
