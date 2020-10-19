@@ -1,0 +1,9 @@
+---
+- name: Download App
+  git:
+    repo: "{{ app_repo }}"
+    dest: "{{ app_download_dest }}"
+
+- name: Install App Requirements
+  pip:
+    requirements: {{ app_download_dest }}/app/requirements.txt

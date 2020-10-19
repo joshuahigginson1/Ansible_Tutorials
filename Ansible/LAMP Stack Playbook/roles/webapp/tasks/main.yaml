@@ -1,0 +1,4 @@
+---
+- include: database.yaml
+- include: application.yaml
+- include: site_config.yaml

@@ -1,0 +1,17 @@
+---
+- name: Install Python MySQL Library
+  apt:
+    name: python-mysqldb
+    state: present
+
+- name: Create MySQL User
+  mysql_user:
+    name: appuser
+    password: <NOTTHEPASSWORD>
+    priv: "*.*:ALL"
+    state: present
+
+- name: Create MySQL Database
+  mysql_db:
+    name: appdata
+    state: present

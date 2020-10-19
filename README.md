@@ -13,6 +13,7 @@ My configuration management repository used for testing configuration management
   - [Host Patterns](#host-patterns)
   - [Modules](#modules)
   - [Handlers, Facts, Variables, and Templates](#handlers-facts-variables-and-templates)
+  - [Roles](#roles)
 
 ## Ansible
 
@@ -359,3 +360,18 @@ You can save the output of a module to an ansible variable using the 'register' 
 
     - name: Print Ping
       debug: var=winping
+      
+## Roles
+
+Roles are a key feature for making re-usable code in Ansible.
+
+They allow you to bundle common functionality into a single role. They follow a specific folder structure.
+
+Ansible Galaxy helps with creating and sharing roles.
+
+To create a role structure, you can use the ansible-galaxy command.
+
+    ansible-galaxy init <name_of_role>
+    
+When ansible looks for specific files in a role, then they expect to see the default names provided by ansible-galaxy.
+
