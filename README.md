@@ -335,4 +335,27 @@ You declare variables using Jinja2 style curly braces.
 
     key: "{{ variable }}"
     
-    
+### Dynamically Processing files with Jinja2
+
+Ansible allows you to use Jinja2 templating syntax in order to apply changes to a file with pre-processing. This is done using the 'template' module.
+
+### Facts
+
+Ansible uses something called 'facts' to provide you with information about the servers that you are managing. They are obtained automatically using the 'setup' module.
+
+You can run this module as an 'ad-hoc' command, and see all of the extra variables in which ansible provides for use in your playbooks. It makes it really easy to get information about your hosts dynamically. 
+
+### Conditionals
+
+Ansible allows you to use the 'when' statement in order to conditionally run a task. This is most commonly used with ansible facts.
+
+### Saving Module Output to Variables
+
+You can save the output of a module to an ansible variable using the 'register' keyword.
+
+    - name: Ping
+      win_ping:
+      register: winping
+
+    - name: Print Ping
+      debug: var=winping

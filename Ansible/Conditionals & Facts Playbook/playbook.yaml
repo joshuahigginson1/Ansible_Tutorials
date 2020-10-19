@@ -1,0 +1,23 @@
+---
+- hosts: all
+  remote_user: ubuntu
+  become: true
+
+  tasks:
+    - name: Print Environment Variables.
+      debug:
+        msg: "{{ ansible_hostname }}"
+
+      when:
+        - ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: Ping Windows Only.
+      win_ping:
+      register: winping
+      when:
+        - ansible_os_family == 'Windows'
+
+    - name: Print If Running Windows.
+      debug: var=winping
+      when:
+        - ansible_os_family == 'Windows'
