@@ -13,7 +13,6 @@ My configuration management repository used for testing configuration management
   - [Host Patterns](#host-patterns)
   - [Modules](#modules)
 
-
 ## Ansible
 
 Ansible is a configuration management software, allowing you to specify tasks that you want to run on multiple servers, and uses the YAML syntax.
@@ -78,7 +77,21 @@ _Restart the apache2 systemctl service_
 `ansible <servergroup> -m service -a "name=apache2 state=restarted"`
 
 ### Playbooks
+
 **Playbooks** give you the ability to run multiple tasks, in a YAML file containing zero or more **plays**.
+
+Playbooks allow you to create complex configurations, and execute them on multiple servers at the same time.
+
+#### Playbook Common Mistakes
+
+If you are using a string for the value of a key, it must be wrapped in double quotations, if that string has a colon in it.
+
+key: "Duplicate: A Clone's Tale"
+
+If a variable for a value is the start of the value in a key-value pair, you must wrap it in quotes, as YAML will otherwise treat this as the start of a dictionary.
+
+key: "{{ variable }}"
+
 
 #### Modules
 **Modules** are "wrappers" around code, designed for particular purpose.
@@ -264,3 +277,22 @@ You can write modules in any language you want, but files can get quite complica
 When you are ready to use these modules, you can copy them over to any of the directories mentioned in the $ANSIBLE_LIBRARIES environment variable.
 
 If you add a 'library' directory in the same directory as your top level playbook, then your modules will also be included.
+
+## Loops
+
+In a playbook, ansible lets you loop over a list of items using the 'with_items' property.
+
+    tasks:
+    - name: Install Packages
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: true
+
+      with_items:
+        - apache2
+        - mysql-server
+        - mysql-common
+        - mysql-client
+        - libapache2-mod-wsgi 
+
