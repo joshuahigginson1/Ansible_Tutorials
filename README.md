@@ -889,3 +889,27 @@ The second process is called 'unattended execution'. It is useful for machines c
 
     chef-client -j /etc/chef/first-boot.json
  
+#### Advanced Berkshelf
+
+When using the test-kitchen command, we did not have to specify downloading and configuration our cookbook dependencies, as it happened automatically.
+
+When using the Chef Server, we do in fact have to download every cookbook locally.   We do this with the following command:
+
+    berks install
+
+The cookbooks will be downloaded into a hidden directory called .berkshelf.
+
+Our SSL certificate downloaded by knife is a self signed certificate, and so berkshelf may throw an error.
+
+To upload our cookbooks to our Chef server, we use the following command:
+
+    berks upload
+
+In order to tell our nodes which recipes they should run, we have to set our run list with knife:
+
+    knife node run_list set <NameOfNode> 'recipe[chef_cookbook]'
+
+Now that our nodes have their run list configured, we need to actually run the executable. This can be done in a number of ways:
+- Via the command line.
+- Via a crontab job.
+- The knife command. https://docs.chef.io/workstation/knife_ssh/
