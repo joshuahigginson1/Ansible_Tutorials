@@ -775,3 +775,18 @@ You can easily specify different OS families in Kitchen to test this code.
     service apache do
       action [:enable, :start]
     end
+    
+#### Incorporating Multiple Recipes
+
+Just like with Ansible tasks, we can write our recipes out across multiple files.
+
+    ---  # Ansible Default Task
+    - include: database.yaml
+    - include: application.yaml
+    - include: site_config.yaml
+    
+    # Chef Default Recipe
+    include_recipe 'lamp::apache'
+    include_recipe 'lamp::dbsetup'
+    include_recipe 'lamp::app'
+
