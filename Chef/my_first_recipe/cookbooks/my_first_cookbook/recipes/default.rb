@@ -4,10 +4,17 @@
 #
 # Copyright:: 2020, The Authors, All Rights Reserved.
 
-apt_package 'apache2' do
-  action :install
-end
+# Cross Distro Variable
 
+apache_package = value_for_platform_family(
+  ['rhel', 'fedora', 'suse'] => 'httpd'
+  'debian' => 'apache2'
+)
+
+# Install Apache
+package apache_package
+
+# Add New File
 file '/var/www/html/index.html' do
   content '<html>My Website!</html>'
 end
