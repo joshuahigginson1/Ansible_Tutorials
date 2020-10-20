@@ -20,6 +20,7 @@ My configuration management repository used for testing configuration management
   - [Chef Development Kit](#the-chef-development-kit)
   - [Anatomy Of A Cookbook](#the-anatomy-of-a-cookbook)
   - [Setting Up a Chef Workstation](#setting-up-a-chef-workstation)
+  - [Refactoring A Recipe](#refactoring-a-recipe)
 
 
 
@@ -746,3 +747,31 @@ To run kitchen, cd into your cookbook and use the following command. This will a
 To tear down our test infrastructure, cd into your cookbook and use the following command:
 
     kitchen destroy
+    
+### Refactoring A Recipe
+
+#### Making Recipes Cross-Distribution Friendly
+
+When making our recipes cross-distributable, we can leverage the Ruby DSL value_for_platform_family() method.
+
+Rather than defining a specific package manager, the 'platform' resource type is smart enough to determine the correct installer to use on each platform.
+
+You can easily specify different OS families in Kitchen to test this code.
+
+
+    # Ohai looks for the specific platform family before running, and sets the value of our variable accordingly.
+
+    apache_package = value_for_platform_family(
+      ['rhel', 'fedora', 'suse'] => 'httpd',
+      'debian' => 'apache2'
+    )
+
+    # Cross Distribution Package Manager
+
+    package apache_package
+
+#### Starting Services
+
+    service apache do
+      action [:enable, :start]
+    end
