@@ -21,8 +21,8 @@ chef_version '>= 14.0'
 
 # Berkshelf Dependencies
 
-depends 'mysql', '~> 8.5.1'
-depends 'mysql2_chef_gem', '~> 2.1.0'
-depends 'database', '~> 6.1.1'
-depends 'poise-python', '~> 1.7.0'
-depends 'apache2', '~> 3.2.2'
+depends 'mysql'
+depends 'mysql2_chef_gem'
+depends 'database'
+depends 'poise-python'
+depends 'apache2'

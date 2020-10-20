@@ -9,5 +9,5 @@ default['apache_settings'] = value_for_platform_family(
 
 # Application Settings
 
-default['app_repo_url'] = 'https://github.com/whelmed/ansible_demo'
+default['app_repo_url'] = 'https://github.com/cloudacademy/flask-app'
 default['download_dir'] = '/tmp/appdir'
