@@ -33,8 +33,9 @@ bash 'sync_app' do
 end
 
 # Configure Apache using a Ruby erb Template.
-web_app "webapp" do
-   template 'apache.conf.erb'
+apache2_default_site 'webapp' do
+  template_source 'apache.conf.erb'
+  action :enable
 end
 
 # Ensure that our files and dirs are set with correct permissions.

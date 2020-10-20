@@ -1,5 +1,5 @@
 {
-  "revision_id": "9e11d1a6dc5d34b115c0d59394cba5052c260b980401d058bf020fb7a81c2ea8",
+  "revision_id": "0b08639a9893bbf3abb122978595a31895893811c4fe19b888164e68793b8db8",
   "name": "lamp",
   "run_list": [
     "recipe[lamp::default]"
@@ -19,17 +19,6 @@
         "version": "8.6.0"
       }
     },
-    "apt": {
-      "version": "7.3.0",
-      "identifier": "3edad8f185b99bb33c6cc01106e51761a378242c",
-      "dotted_decimal_identifier": "17692073855924635.50450458607683301.25708121826348",
-      "cache_key": "apt-7.3.0-supermarket.chef.io",
-      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/apt/versions/7.3.0/download",
-      "source_options": {
-        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/apt/versions/7.3.0/download",
-        "version": "7.3.0"
-      }
-    },
     "build-essential": {
       "version": "8.2.1",
       "identifier": "4b9d5c72796184085681d3eefd625c90b79530a8",
@@ -41,27 +30,16 @@
         "version": "8.2.1"
       }
     },
-    "database": {
-      "version": "6.1.1",
-      "identifier": "bd582ce4a0b9c2f13767c4d4314c49daf0547779",
-      "dotted_decimal_identifier": "53295720435857858.67896388210667852.81204683765625",
-      "cache_key": "database-6.1.1-supermarket.chef.io",
-      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/database/versions/6.1.1/download",
-      "source_options": {
-        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/database/versions/6.1.1/download",
-        "version": "6.1.1"
-      }
-    },
     "lamp": {
       "version": "0.1.0",
-      "identifier": "293332daa9e52c08b0203c109d3bad6a9285f32c",
-      "dotted_decimal_identifier": "11596767555085612.2445452306849083.190673236390700",
+      "identifier": "af5cebb9c11e5529568ff1de551b67f0c8fdb9da",
+      "dotted_decimal_identifier": "49360288427875925.11635650283328795.114283861883354",
       "source": ".",
       "cache_key": null,
       "scm_info": {
         "scm": "git",
         "remote": "https://github.com/joshuahigginson1/Configuration_Management.git",
-        "revision": "47adf40c881ba4dd3d9ba50bce3acb679b993c2a",
+        "revision": "a7c0dd03ac98d851d3c728bc619c18e84a7bea88",
         "working_tree_clean": false,
         "published": false,
         "synchronized_remote_branches": [
@@ -160,17 +138,6 @@
         "version": "1.7.0"
       }
     },
-    "postgresql": {
-      "version": "8.0.0",
-      "identifier": "d2ceac4de0f51e7d1ab74b96e58310653b4f4ebe",
-      "dotted_decimal_identifier": "59336984545522974.35213746638349699.18026972794558",
-      "cache_key": "postgresql-8.0.0-supermarket.chef.io",
-      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/postgresql/versions/8.0.0/download",
-      "source_options": {
-        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/postgresql/versions/8.0.0/download",
-        "version": "8.0.0"
-      }
-    },
     "selinux_policy": {
       "version": "2.4.3",
       "identifier": "e3c7dfeb42d4f183025c061d5544c9e4b47ee797",
@@ -203,17 +170,6 @@
         "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/windows/versions/7.0.2/download",
         "version": "7.0.2"
       }
-    },
-    "yum-epel": {
-      "version": "3.3.0",
-      "identifier": "187c02d6cef471b7f37402ac80fb6ca2db347732",
-      "dotted_decimal_identifier": "6891751076721777.51777600324665595.119446718150450",
-      "cache_key": "yum-epel-3.3.0-supermarket.chef.io",
-      "origin": "https://supermarket.chef.io:443/api/v1/cookbooks/yum-epel/versions/3.3.0/download",
-      "source_options": {
-        "artifactserver": "https://supermarket.chef.io:443/api/v1/cookbooks/yum-epel/versions/3.3.0/download",
-        "version": "3.3.0"
-      }
     }
   },
   "default_attributes": {
@@ -229,16 +185,8 @@
         "= 8.6.0"
       ],
       [
-        "apt",
-        "= 7.3.0"
-      ],
-      [
         "build-essential",
         "= 8.2.1"
-      ],
-      [
-        "database",
-        "= 6.1.1"
       ],
       [
         "lamp",
@@ -277,10 +225,6 @@
         "= 1.7.0"
       ],
       [
-        "postgresql",
-        "= 8.0.0"
-      ],
-      [
         "selinux_policy",
         "= 2.4.3"
       ],
@@ -291,17 +235,10 @@
       [
         "windows",
         "= 7.0.2"
-      ],
-      [
-        "yum-epel",
-        "= 3.3.0"
       ]
     ],
     "dependencies": {
       "apache2 (8.6.0)": [
-
-      ],
-      "apt (7.3.0)": [
 
       ],
       "build-essential (8.2.1)": [
@@ -314,12 +251,6 @@
           ">= 1.1.0"
         ]
       ],
-      "database (6.1.1)": [
-        [
-          "postgresql",
-          ">= 1.0.0"
-        ]
-      ],
       "lamp (0.1.0)": [
         [
           "mysql",
@@ -327,10 +258,6 @@
         ],
         [
           "mysql2_chef_gem",
-          ">= 0.0.0"
-        ],
-        [
-          "database",
           ">= 0.0.0"
         ],
         [
@@ -400,16 +327,6 @@
           "~> 2.0"
         ]
       ],
-      "postgresql (8.0.0)": [
-        [
-          "yum-epel",
-          ">= 0.0.0"
-        ],
-        [
-          "apt",
-          ">= 0.0.0"
-        ]
-      ],
       "selinux_policy (2.4.3)": [
 
       ],
@@ -420,9 +337,6 @@
         ]
       ],
       "windows (7.0.2)": [
-
-      ],
-      "yum-epel (3.3.0)": [
 
       ]
     }

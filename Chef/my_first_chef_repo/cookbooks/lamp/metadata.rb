@@ -23,6 +23,5 @@ chef_version '>= 14.0'
 
 depends 'mysql'
 depends 'mysql2_chef_gem'
-depends 'database'
 depends 'poise-python'
 depends 'apache2'

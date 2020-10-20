@@ -11,6 +11,12 @@ apache_package = value_for_platform_family(
   'debian' => 'apache2'
 )
 
+bash 'update_gems' do
+  code <<-EOH
+    gem update --system
+  EOH
+end
+
 # Install Apache.
 package apache_package
 

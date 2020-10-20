@@ -11,3 +11,11 @@ default['apache_settings'] = value_for_platform_family(
 
 default['app_repo_url'] = 'https://github.com/cloudacademy/flask-app'
 default['download_dir'] = '/tmp/appdir'
+
+# Database Settings
+
+default['db_conn'] = {
+  'host' => '127.0.0.1',
+  'root' => 'root',
+  'password' => 'databasePassword1'
+}
