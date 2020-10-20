@@ -20,6 +20,6 @@ file '/var/www/html/index.html' do
 end
 
 # Ensure that the apache service is started.
-service apache do
+service apache_package do
   action [:enable, :start]
 end
