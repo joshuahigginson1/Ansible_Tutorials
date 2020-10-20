@@ -21,6 +21,8 @@ My configuration management repository used for testing configuration management
   - [Anatomy Of A Cookbook](#the-anatomy-of-a-cookbook)
   - [Setting Up a Chef Workstation](#setting-up-a-chef-workstation)
   - [Refactoring A Recipe](#refactoring-a-recipe)
+  - [Setting Up a Chef Server](#setting-up-the-chef-server)
+  - [Configuring a Chef Node](#configuring-nodes)
 
 
 
@@ -790,3 +792,100 @@ Just like with Ansible tasks, we can write our recipes out across multiple files
     include_recipe 'lamp::dbsetup'
     include_recipe 'lamp::app'
 
+#### Using Berkshelf to Manage Chef Supermarket
+
+We can use Berkshelf to install and manage our dependencies from the Chef Supermarket.
+
+In order to run Berkshelf, we must add it to our spec/spec_helper.rb file as a requirement.
+
+require 'chefspec'
+require 'chefspec/berkshelf'
+
+Berkshelf uses a file called a 'Berksfile' at the very top of our cookbook directory structure.
+
+The source command tells Berkshelf where to find our additional cookbooks.
+
+The metadata command tells Berkshelf to look inside of metadata.rb for any additional dependencies. 
+
+    source 'https://supermarket.chef.io'
+    metadata
+
+Ben Lambert suggests that we should use the Berksfile very minimally. By adding the dependencies to your metadata file, if a cookbook is not already present on the system, then the command will run at all.
+
+### Setting Up the Chef Server
+
+When it comes to setting up a Chef server, you can either set up a server yourself, or use a cloud service provider.
+
+Once a server is set up, it doesn't actually matter where it is hosted.
+
+Chef Server AMI: https://aws.amazon.com/marketplace/pp/Chef-Chef-Server-Free-5-node-license/B010OMNV2W
+
+Ensure to open up the stated ports within your security group from the Chef documentation. It is also important to add additional storage to your virtual machine. 
+
+Once Installed, the Chef server will provide you with an RSA key, which is used to authorise Chef and Berkshelf. 
+
+This .pem file should be saved to your .chef folder within your chef repo, and edit your knife.rb file in order to provide the path to it. 
+
+Knife also expects to know the URL of the chef server. This is written as follows:
+
+    https://<url>/organizations/<ABBREVIATED_ORG_NAME>
+
+The command to download the SSL trusted certificates from the Chef server is:
+
+    knife ssl fetch
+
+### Configuring Nodes
+
+Configuring nodes is rather simple. Start by creating your nodes using AWS.
+
+The process of installing the initial Chef server on a node is called 'bootstrapping'. 
+
+There are a couple of methods which are used in order to bootstrap a node.   The first is to use the knife command in order to SSH into the node itself:
+
+    https://docs.chef.io/install_bootstrap/
+
+    knife bootstrap <domain_name> -i <~/.ssh/key.pem> -N <node_name> -x <name_of_SSH_user> --sudo
+
+The second process is called 'unattended execution'. It is useful for machines created using autoscaling groups, and this is done through the User Data section of our node.
+
+    #!/bin/bash -xev
+    
+    # Do some chef pre-work
+    /bin/mkdir -p /etc/chef
+    /bin/mkdir -p /var/lib/chef
+    /bin/mkdir -p /var/log/chef
+
+    # Setup hosts file correctly
+    cat >> "/etc/hosts" << EOF
+    10.0.0.5    compliance-server compliance-server.automate.com
+    10.0.0.6    infra-server infra-server.automate.com
+    10.0.0.7    automate-server automate-server.automate.com
+    EOF
+
+    cd /etc/chef/
+
+    # Install chef
+    curl -L https://omnitruck.chef.io/install.sh | bash || error_exit 'could not install chef'
+
+    # Create first-boot.json
+    cat > "/etc/chef/first-boot.json" << EOF
+    {
+       "run_list" :[
+       "role[base]"
+       ]
+    }
+    EOF
+
+    NODE_NAME=node-$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 4 | head -n 1)
+
+    # Create client.rb
+    cat > '/etc/chef/client.rb' << EOF
+    log_location            STDOUT
+    chef_server_url         'https://aut-chef-server/organizations/my-org'
+    validation_client_name  'my-org-validator'
+    validation_key          '/etc/chef/my_org_validator.pem'
+    node_name               "${NODE_NAME}"
+    EOF
+
+    chef-client -j /etc/chef/first-boot.json
+ 
