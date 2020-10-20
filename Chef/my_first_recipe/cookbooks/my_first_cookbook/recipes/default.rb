@@ -7,7 +7,7 @@
 # Cross Distro Variable.
 
 apache_package = value_for_platform_family(
-  ['rhel', 'fedora', 'suse'] => 'httpd'
+  ['rhel', 'fedora', 'suse'] => 'httpd',
   'debian' => 'apache2'
 )
 
