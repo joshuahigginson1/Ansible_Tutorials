@@ -1,0 +1,18 @@
+---
+
+- name: Set AWS Access Key ID.
+  shell:
+    cmd: "aws configure set default.output {{ aws_access_key_id }}"
+
+- name: Set Secret Access Key.
+  shell:
+    cmd: "aws configure set aws_secret_access_key {{ aws_secret_access_key }}"
+
+
+- name: Set AWS Default Region.
+  shell:
+    cmd: "aws configure set default.region {{ default_region }}"
+
+- name: Set AWS Default Output.
+  shell:
+    cmd: "aws configure set default.output {{ default_output }}"

@@ -1,0 +1,6 @@
+---
+aws_access_key_id: "<SED_ACCESS_KEY_ID>"
+aws_secret_access_key: "<SET_SECRET_ACCESS_KEY>"
+
+default_region: "eu-west-1"
+default_output: "json"

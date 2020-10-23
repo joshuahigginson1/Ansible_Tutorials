@@ -1,0 +1,21 @@
+---
+- hosts: aws_cli
+  become: true
+  remote_user: ansible
+
+  vars_prompt:
+
+    - name: aws_access_key_id
+      prompt: Enter the AWS Access Key ID.
+      private: yes
+      unsafe: yes
+
+    - name: aws_secret_access_key
+      prompt: Enter the AWS secret Access Key.
+      private: yes
+      unsafe: yes
+
+  roles:
+    - install
+    - configure
+...

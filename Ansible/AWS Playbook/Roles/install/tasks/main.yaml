@@ -1,0 +1,38 @@
+---
+- name: Install AWS Dependencies.
+  package: "{{ item }}"
+  state: present
+
+  loop: "{{ aws_dependencies }}"
+
+- name: Make Install Directory.
+  file:
+    path: "{{ install_directory }}"
+    state: directory
+
+- name: Download AWS CLI for x86 Machines Only.
+  when: ansible_facts["ansible_architecture"] == "x86_64"
+  get_url:
+    url: "{{ install_x86 }}"
+    dest: "{{ install_directory }}/{{ install_file_name }}"
+
+- name: Download AWS CLI for ARM Machines Only.
+  when: ansible_facts["ansible_architecture"] == "aarch64"
+  get_url:
+    url: "{{ install_arm }}"
+    dest: "{{ install_directory }}/{{ install_file_name }}"
+
+- name: Unzip the AWS CLI Installer.
+  unarchive:
+    src: "{{ install_directory }}/{{ install_file_name }}"
+    dest: "{{ install_directory }}"
+
+- name: Install AWS CLI.
+  shell:
+    cmd: "sudo {{ install_directory }}/aws/install"
+
+- name: Clean Up Installation.
+  file:
+    path: "{{ install_directory }}"
+    state: absent
+
