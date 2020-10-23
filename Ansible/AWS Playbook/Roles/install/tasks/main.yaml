@@ -1,7 +1,8 @@
 ---
-- name: Install AWS Dependencies.
-  package: "{{ item }}"
-  state: present
+- name: "Install AWS Dependencies."
+  package:
+    name: "{{ item }}"
+    state: present
 
   loop: "{{ aws_dependencies }}"
 
