@@ -2,7 +2,7 @@
 
 - name: Set AWS Access Key ID.
   shell:
-    cmd: "aws configure set default.output {{ aws_access_key_id }}"
+    cmd: "aws configure set aws_access_key_id {{ aws_access_key_id }}"
 
 - name: Set Secret Access Key.
   shell:
