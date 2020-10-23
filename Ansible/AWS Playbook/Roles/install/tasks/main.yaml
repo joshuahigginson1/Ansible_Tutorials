@@ -31,6 +31,8 @@
 - name: Unzip the AWS CLI Installer.
   unarchive:
     src: "{{ install_directory }}/{{ install_file_name }}"
+    remote_src: yes
+
     dest: "{{ install_directory }}"
 
 - name: Install AWS CLI.
