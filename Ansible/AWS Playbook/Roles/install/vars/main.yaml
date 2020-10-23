@@ -1,10 +1,8 @@
 ---
 aws_dependencies:
-  - glibc
-  - groff
+  - glibc-doc
   - less
   - unzip
-  - zipinfo
 
 install_x86: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
 install_arm: "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip"

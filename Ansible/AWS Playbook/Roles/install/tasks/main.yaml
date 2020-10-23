@@ -1,5 +1,10 @@
 ---
-- name: "Install AWS Dependencies."
+- name: Debug.
+  debug:
+    var: ansible_facts
+
+
+- name: Install AWS Dependencies.
   package:
     name: "{{ item }}"
     state: present
@@ -12,13 +17,13 @@
     state: directory
 
 - name: Download AWS CLI for x86 Machines Only.
-  when: ansible_facts["ansible_architecture"] == "x86_64"
+  when: ansible_facts["architecture"] == "x86_64"
   get_url:
     url: "{{ install_x86 }}"
     dest: "{{ install_directory }}/{{ install_file_name }}"
 
 - name: Download AWS CLI for ARM Machines Only.
-  when: ansible_facts["ansible_architecture"] == "aarch64"
+  when: ansible_facts["architecture"] == "aarch64"
   get_url:
     url: "{{ install_arm }}"
     dest: "{{ install_directory }}/{{ install_file_name }}"
