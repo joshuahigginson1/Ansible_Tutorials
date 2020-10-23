@@ -3,7 +3,6 @@
 - name: Set AWS Access Key ID.
   shell:
     cmd: "aws configure set aws_access_key_id {{ aws_access_key_id }}"
-  register: "debug"
 
 - name: Set Secret Access Key.
   shell:
