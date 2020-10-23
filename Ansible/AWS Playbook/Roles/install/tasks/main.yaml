@@ -3,7 +3,6 @@
   debug:
     var: ansible_facts
 
-
 - name: Install AWS Dependencies.
   package:
     name: "{{ item }}"
@@ -37,7 +36,7 @@
 
 - name: Install AWS CLI.
   shell:
-    cmd: "sudo {{ install_directory }}/aws/install"
+    cmd: "{{ install_directory }}/aws/install --update "
 
 - name: Clean Up Installation.
   file:
