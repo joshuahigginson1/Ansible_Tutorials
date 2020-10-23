@@ -1,8 +1,4 @@
 ---
-- name: Debug.
-  debug:
-    var: ansible_facts
-
 - name: Install AWS Dependencies.
   package:
     name: "{{ item }}"

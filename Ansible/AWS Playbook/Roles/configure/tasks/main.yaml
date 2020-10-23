@@ -3,11 +3,11 @@
 - name: Set AWS Access Key ID.
   shell:
     cmd: "aws configure set aws_access_key_id {{ aws_access_key_id }}"
+  register: "debug"
 
 - name: Set Secret Access Key.
   shell:
     cmd: "aws configure set aws_secret_access_key {{ aws_secret_access_key }}"
-
 
 - name: Set AWS Default Region.
   shell:
